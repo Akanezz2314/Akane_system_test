@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Tarot - My Version</title>
+    <style>
+        body { 
+            font-family: 'Tahoma', sans-serif; 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            color: #333;
+        }
+
+        .card-container {
+            background: white;
+            width: 350px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-img-area {
+            width: 100%;
+            height: 350px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .profile-img-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* เริ่มต้นซ่อนรูปไว้ */
+        }
+
+        .question-mark-display {
+            font-size: 8rem;
+            color: #bdc3c7;
+            font-weight: bold;
+        }
+
+        .info-area {
+            padding: 25px;
+        }
+
+        h2 { 
+            margin: 0 0 10px 0; 
+            font-size: 1.8rem; 
+            color: #2c3e50; 
+        }
+
+        .bio-text {
+            font-size: 1rem;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: left;
+            min-height: 100px;
+        }
+
+        button { 
+            background: linear-gradient(to right, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 50px; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            font-weight: bold;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(255,154,158,0.4);
+            transition: 0.3s;
+        }
+
+        button:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,154,158,0.6);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container" id="character-card">
+    <div class="profile-img-area">
+        <img src="" id="profile-pic" alt="Character Profile">
+        <div id="question-mark" class="question-mark-display">?</div>
+    </div>
+    
+    <div class="info-area">
+        <h2 id="char-name">กดปุ่มเพื่อเริ่มสุ่ม!</h2>
+        <div class="bio-text" id="char-bio">
+            พร้อมที่จะทำความรู้จักกับตัวละครหรือยัง? กดปุ่มด้านล่างเพื่อสุ่มการ์ดตัวละครขึ้นมา
+        </div>
+        
+        <button onclick="drawCard()">สุ่มการ์ดตัวละคร</button>
+    </div>
+</div>
+
+<script>
+    const characters = [
+        { 
+            name: "ซวงหัว", 
+            pic: "pic1.png", 
+            bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        { 
+            name: "หลิงเซียว", 
+            pic: "pic2.png", 
+            bio: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        },
+        { 
+            name: "ว่างชิวลั่วซาง", 
+            pic: "pic3.png", 
+            bio: "Curabitur pretium tincidunt lacus. Nulla facilisi. Sed porta dolor ac nisl. Class aptent taciti sociosqu."
+        }
+    ];
+
+    function drawCard() {
+        // 1. สุ่มตัวละคร
+        const randomChar = characters[Math.floor(Math.random() * characters.length)];
+        
+        // 2. ดึง Element มาเก็บไว้ในตัวแปร
+        const profilePic = document.getElementById('profile-pic');
+        const questionMark = document.getElementById('question-mark');
+        const charName = document.getElementById('char-name');
+        const charBio = document.getElementById('char-bio');
+
+        // 3. สั่งเปลี่ยนข้อมูลและสลับการมองเห็น
+        profilePic.src = randomChar.pic;
+        profilePic.style.display = "block"; // แสดงรูป
+        questionMark.style.display = "none"; // ซ่อน ?
+        
+        charName.innerText = randomChar.name;
+        charBio.innerText = randomChar.bio;
+
+        // 4. เอฟเฟกต์เด้ง
+        const card = document.getElementById('character-card');
+        card.style.transform = "scale(1.02)";
+        setTimeout(() => {
+            card.style.transform = "scale(1)";
+        }, 200);
+    }
+</script>
+
+</body>
+</html>
