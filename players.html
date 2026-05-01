@@ -88,7 +88,7 @@
             border-radius: 24px; 
             text-align: center; 
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เพิ่มความเด้งตอนยก */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             cursor: pointer;
         }
 
@@ -106,31 +106,68 @@
 
         /* --- Hover Effect สำหรับทุกคน --- */
         .player-card:hover {
-            transform: translateY(-12px); /* ยกบัตรขึ้น */
+            transform: translateY(-12px); 
             background: rgba(30, 41, 59, 0.8);
             border-color: rgba(255, 255, 255, 0.3);
         }
         .player-card:hover .player-img {
-            transform: scale(1.1); /* ขยายรูปเล็กน้อยตอนจ่อเมาส์ */
+            transform: scale(1.1); 
         }
 
         /* --- Alive State (เขียวเรืองแสง) --- */
         .alive-card .status-text { color: #4ade80; }
         .alive-card:hover {
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); /* เรืองแสงสีเขียว */
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); 
         }
         
-        /* --- Dead State (แดงเข้มจางๆ + เรืองแสงแดง) --- */
+        /* --- Dead State (หลอนๆ กระพริบ) --- */
         .dead-card { 
-            background: rgba(127, 29, 29, 0.4); 
-            border: 1px solid rgba(239, 68, 68, 0.5); 
+            background: rgba(127, 29, 29, 0.3); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+            /* ใส่แอนิเมชันให้กระพริบแบบสุ่ม (ไฟตก) */
+            animation: spookyFlicker 4s infinite alternate;
         }
-        .dead-card .player-img { filter: grayscale(1) contrast(1.2); border-color: #ef4444; opacity: 0.7; }
-        .dead-card .status-text { color: #fca5a5; }
+        
+        /* ภาพของคนตาย (ขาวดำ + เรืองแสงแดงนิดๆ) */
+        .dead-card .player-img { 
+            filter: grayscale(1) contrast(1.2) brightness(0.8); 
+            border-color: rgba(239, 68, 68, 0.6); 
+            opacity: 0.8; 
+            box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+        
+        /* ข้อความคนตาย (สีแดงหม่นและกระพริบ) */
+        .dead-card .status-text { 
+            color: #fca5a5; 
+            animation: spookyText 3s infinite;
+        }
         
         .dead-card:hover {
-            background: rgba(153, 27, 27, 0.6);
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4); /* เรืองแสงสีแดง */
+            background: rgba(153, 27, 27, 0.7);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5); 
+            /* ตอนเอาเมาส์ไปชี้ หยุดกระพริบแล้วโชว์ชัดๆ */
+            animation: none;
+            opacity: 1;
+        }
+
+        /* --- Keyframes สำหรับความหลอน (กระพริบไฟตก) --- */
+        @keyframes spookyFlicker {
+            0% { opacity: 0.8; box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
+            5% { opacity: 0.4; }
+            10% { opacity: 0.9; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+            15% { opacity: 0.3; }
+            20% { opacity: 0.8; box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
+            50% { opacity: 0.7; }
+            55% { opacity: 0.2; }
+            60% { opacity: 0.8; }
+            100% { opacity: 0.6; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+        }
+
+        /* Keyframes ข้อความให้กระตุกเบาๆ */
+        @keyframes spookyText {
+            0%, 90%, 100% { opacity: 1; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+            95% { opacity: 0.1; }
+            98% { opacity: 0.8; }
         }
     </style>
 </head>
