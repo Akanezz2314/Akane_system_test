@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Status List</title>
+    <title>Player Status List - Intense Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
 
         body { 
             font-family: 'Kanit', sans-serif; 
-            background: #0b1120;
+            background: #000000; /* พื้นหลังหลักเป็นสีดำสนิท */
             color: white; 
             display: flex; 
             flex-direction: column; 
@@ -21,10 +21,12 @@
             position: relative;
         }
 
+        /* [จุดแก้ไขสีฉากหลัง] */
         .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+            /* ไล่จากแดงเข้มตรงกลางไปหาดำรอบนอก */
+            background: radial-gradient(circle at center, #300101 0%, #000000 100%);
             z-index: -2;
         }
 
@@ -42,132 +44,126 @@
             z-index: 1;
         }
 
+        /* [จุดแก้ไขสีตัวเลขผู้รอดชีวิต] */
         .survivor-count {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             font-weight: 600;
-            color: #4ade80;
-            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+            color: #fbbf24; /* สีทองเข้ม */
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.6), 0 0 40px rgba(251, 191, 36, 0.2);
             margin: 0;
             animation: neonBlink 2s infinite;
         }
 
         .total-label {
             font-size: 1rem;
-            color: #94a3b8;
-            letter-spacing: 2px;
+            color: #f87171; /* แดงอ่อน */
+            letter-spacing: 5px;
             text-transform: uppercase;
+            font-weight: bold;
         }
 
         @keyframes neonBlink {
-            0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(74, 222, 128, 0.8); }
-            50% { opacity: 0.7; text-shadow: 0 0 5px rgba(74, 222, 128, 0.2); }
+            0%, 100% { opacity: 1; filter: brightness(1.2); }
+            50% { opacity: 0.8; filter: brightness(0.8); }
         }
 
         h1 { 
             margin: 10px 0 40px; 
-            color: #f8fafc; 
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            color: #ffffff; 
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
             font-weight: 600;
             z-index: 1;
+            letter-spacing: 2px;
         }
 
         .grid-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 25px; 
+            gap: 30px; 
             width: 100%; 
             max-width: 1200px; 
             z-index: 1;
         }
         
-        /* Base Player Card */
+        /* [จุดแก้ไขสีการ์ดปกติ] */
         .player-card { 
-            background: rgba(30, 41, 59, 0.6); 
-            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 10, 0.8); 
+            backdrop-filter: blur(15px);
             padding: 25px 15px; 
-            border-radius: 24px; 
+            border-radius: 20px; 
             text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             cursor: pointer;
         }
 
         .player-img {
-            width: 100px; height: 100px;
+            width: 110px; height: 110px;
             border-radius: 50%;
             margin: 0 auto 15px;
             object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.4s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
         }
 
-        .player-name { font-size: 1.2rem; font-weight: 600; margin: 5px 0; }
-        .status-text { font-size: 0.85rem; font-weight: bold; }
+        .player-name { font-size: 1.2rem; font-weight: 600; margin: 5px 0; color: #f1f5f9; }
+        .status-text { font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; }
 
-        /* --- Hover Effect สำหรับทุกคน --- */
         .player-card:hover {
-            transform: translateY(-12px); 
-            background: rgba(30, 41, 59, 0.8);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .player-card:hover .player-img {
-            transform: scale(1.1); 
+            transform: translateY(-15px) scale(1.02); 
+            background: rgba(20, 20, 20, 0.9);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* --- Alive State (เขียวเรืองแสง) --- */
-        .alive-card .status-text { color: #4ade80; }
+        /* --- Alive State (เขียวหยกเรืองแสง) --- */
+        .alive-card .status-text { color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
         .alive-card:hover {
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); 
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2); 
+            border-color: #10b981;
         }
         
-        /* --- Dead State (หลอนๆ กระพริบ) --- */
+        /* [จุดแก้ไขบัตรคนตาย] --- Dead State (Intense Spooky) --- */
         .dead-card { 
-            background: rgba(127, 29, 29, 0.3); 
-            border: 1px solid rgba(239, 68, 68, 0.3); 
-            /* ใส่แอนิเมชันให้กระพริบแบบสุ่ม (ไฟตก) */
-            animation: spookyFlicker 4s infinite alternate;
+            background: rgba(30, 0, 0, 0.6); 
+            border: 1px solid rgba(220, 38, 38, 0.3); 
+            animation: glitchFlicker 5s infinite;
         }
         
-        /* ภาพของคนตาย (ขาวดำ + เรืองแสงแดงนิดๆ) */
         .dead-card .player-img { 
-            filter: grayscale(1) contrast(1.2) brightness(0.8); 
-            border-color: rgba(239, 68, 68, 0.6); 
-            opacity: 0.8; 
-            box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.5);
+            filter: grayscale(1) contrast(1.5) brightness(0.5); 
+            border-color: #7f1d1d; 
+            opacity: 0.6; 
         }
         
-        /* ข้อความคนตาย (สีแดงหม่นและกระพริบ) */
         .dead-card .status-text { 
-            color: #fca5a5; 
-            animation: spookyText 3s infinite;
+            color: #ef4444; 
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+            animation: textNoise 3s infinite;
         }
         
         .dead-card:hover {
-            background: rgba(153, 27, 27, 0.7);
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5); 
-            /* ตอนเอาเมาส์ไปชี้ หยุดกระพริบแล้วโชว์ชัดๆ */
+            background: rgba(69, 10, 10, 0.9);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.4); 
             animation: none;
-            opacity: 1;
         }
 
-        /* --- Keyframes สำหรับความหลอน (กระพริบไฟตก) --- */
-        @keyframes spookyFlicker {
-            0% { opacity: 0.8; box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
-            5% { opacity: 0.4; }
-            10% { opacity: 0.9; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
-            15% { opacity: 0.3; }
-            20% { opacity: 0.8; box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
-            50% { opacity: 0.7; }
-            55% { opacity: 0.2; }
-            60% { opacity: 0.8; }
-            100% { opacity: 0.6; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+        /* Keyframes สำหรับความ Intense */
+        @keyframes glitchFlicker {
+            0%, 100% { opacity: 0.9; }
+            31% { opacity: 0.9; }
+            32% { opacity: 0.4; transform: translateX(1px); }
+            33% { opacity: 0.9; }
+            34% { opacity: 0.3; transform: translateX(-1px); }
+            35% { opacity: 0.9; }
+            80% { opacity: 0.9; }
+            81% { opacity: 0.5; }
+            82% { opacity: 0.9; }
         }
 
-        /* Keyframes ข้อความให้กระตุกเบาๆ */
-        @keyframes spookyText {
-            0%, 90%, 100% { opacity: 1; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
-            95% { opacity: 0.1; }
-            98% { opacity: 0.8; }
+        @keyframes textNoise {
+            0%, 90%, 100% { opacity: 1; transform: scale(1); }
+            92% { opacity: 0.2; transform: scale(1.05); }
+            94% { opacity: 0.8; transform: scale(0.95); }
         }
     </style>
 </head>
@@ -219,31 +215,31 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
-                this.opacity = Math.random() * 0.5 + 0.2;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * -1.5 - 0.5; // ลอยขึ้นเหมือนเถ้าถ่าน
+                this.opacity = Math.random() * 0.6 + 0.1;
+                // [จุดแก้ไขสีละอองเถ้าถ่าน]
+                this.color = Math.random() > 0.5 ? '#ff4d4d' : '#ff944d'; 
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0; if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0; if (this.y < 0) this.y = canvas.height;
+                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
             }
             draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-        function init() { for (let i = 0; i < 80; i++) { particles.push(new Particle()); } }
+        function init() { for (let i = 0; i < 20; i++) { particles.push(new Particle()); } }
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
 
-        init(); 
-        animate();
-        updateSurvivorCount();
+        init(); animate(); updateSurvivorCount();
     </script>
 </body>
 </html>
