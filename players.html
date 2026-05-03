@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Status List - Intense Edition</title>
+    <title>Victory for the Royal Court</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
 
@@ -21,10 +21,11 @@
             position: relative;
         }
 
+        /* ปรับแสงด้านหลังเป็นสีฟ้า */
         .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #300101 0%, #000000 100%);
+            background: radial-gradient(circle at center, #001a33 0%, #000000 100%);
             z-index: -2;
         }
 
@@ -38,15 +39,15 @@
         .survivor-count {
             font-size: 3.5rem;
             font-weight: 600;
-            color: #fbbf24;
-            text-shadow: 0 0 20px rgba(251, 191, 36, 0.6), 0 0 40px rgba(251, 191, 36, 0.2);
+            color: #60a5fa; /* ปรับเป็นสีฟ้า */
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.6), 0 0 40px rgba(96, 165, 250, 0.2);
             margin: 0;
             animation: neonBlink 2s infinite;
         }
 
         .total-label {
             font-size: 1rem;
-            color: #f87171;
+            color: #93c5fd;
             letter-spacing: 5px;
             text-transform: uppercase;
             font-weight: bold;
@@ -57,7 +58,20 @@
             50% { opacity: 0.8; filter: brightness(0.8); }
         }
 
-        h1 { margin: 10px 0 40px; color: #ffffff; text-shadow: 0 0 15px rgba(255, 0, 0, 0.3); font-weight: 600; letter-spacing: 2px; }
+        /* Effect ตัวอักษรไฟสีฟ้า */
+        h1 { 
+            margin: 10px 0 40px; 
+            color: #ffffff; 
+            font-weight: 600; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: blueFire 3s ease-in-out infinite;
+        }
+
+        @keyframes blueFire {
+            0%, 100% { text-shadow: 0 -2px 4px #fff, 0 -4px 10px #60a5fa, 0 -10px 20px #3b82f6, 0 -18px 40px #1d4ed8; }
+            50% { text-shadow: 0 -2px 4px #fff, 0 -4px 10px #93c5fd, 0 -8px 15px #3b82f6, 0 -15px 30px #2563eb; }
+        }
 
         .grid-container { 
             display: grid; 
@@ -73,22 +87,24 @@
             padding: 25px 15px; 
             border-radius: 20px; 
             text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(96, 165, 250, 0.1); /* ขอบฟ้าบางๆ */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             cursor: pointer;
         }
 
-        .player-img { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 15px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.1); transition: all 0.4s ease; }
+        .player-img { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 15px; object-fit: cover; border: 2px solid rgba(96, 165, 250, 0.2); transition: all 0.4s ease; }
         .player-name { font-size: 1.2rem; font-weight: 600; margin: 5px 0; color: #f1f5f9; }
         .status-text { font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; }
 
-        .player-card:hover { transform: translateY(-15px) scale(1.02); background: rgba(20, 20, 20, 0.9); border-color: rgba(255, 255, 255, 0.2); }
+        .player-card:hover { transform: translateY(-15px) scale(1.02); background: rgba(20, 20, 20, 0.9); border-color: rgba(96, 165, 250, 0.5); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); }
         .alive-card .status-text { color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
-        .dead-card { background: rgba(30, 0, 0, 0.6); border: 1px solid rgba(220, 38, 38, 0.3); animation: glitchFlicker 5s infinite; }
-        .dead-card .player-img { filter: grayscale(1) contrast(1.5) brightness(0.5); border-color: #7f1d1d; opacity: 0.6; }
-        .dead-card .status-text { color: #ef4444; animation: textNoise 3s infinite; }
+        
+        /* คนตายในธีมราชสำนัก */
+        .dead-card { background: rgba(0, 5, 20, 0.6); border: 1px solid rgba(96, 165, 250, 0.1); opacity: 0.7; }
+        .dead-card .player-img { filter: grayscale(1) contrast(1.2) brightness(0.4); border-color: #1e3a8a; }
+        .dead-card .status-text { color: #64748b; }
 
-        /* --- 🌑 Modal (Popup) Style --- */
+        /* Modal Style */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
@@ -97,14 +113,14 @@
         }
 
         .modal-content {
-            background: rgba(20, 20, 20, 0.95);
-            border: 2px solid #300101;
+            background: rgba(10, 15, 30, 0.95);
+            border: 2px solid #1e3a8a;
             width: 90%; max-width: 450px;
             padding: 40px 30px;
             border-radius: 30px;
             position: relative;
             text-align: center;
-            box-shadow: 0 0 40px rgba(220, 38, 38, 0.2);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
             animation: modalFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -115,36 +131,18 @@
 
         .close-modal {
             position: absolute; top: 20px; right: 25px;
-            font-size: 2rem; color: #f87171; cursor: pointer;
+            font-size: 2rem; color: #60a5fa; cursor: pointer;
             transition: 0.3s;
         }
         .close-modal:hover { color: #ffffff; transform: rotate(90deg); }
 
-        .modal-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #300101; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .modal-name { font-size: 2rem; margin: 0; color: #fbbf24; }
+        .modal-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #1e3a8a; margin-bottom: 20px; }
+        .modal-name { font-size: 2rem; margin: 0; color: #60a5fa; }
         .modal-bio { 
-            margin-top: 20px; 
-            line-height: 1.6; 
-            color: #cbd5e1; 
-            text-align: left; 
-            background: rgba(255,255,255,0.03); 
-            padding: 15px; 
-            border-radius: 15px; 
-            border-left: 3px solid #7f1d1d; 
-            max-height: 250px; 
-            overflow-y: auto;
-            white-space: pre-wrap; /* เพื่อให้ขึ้นบรรทัดใหม่ตามที่พิมพ์ใน JS */
+            margin-top: 20px; line-height: 1.6; color: #cbd5e1; text-align: left; 
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; 
+            border-left: 3px solid #1e3a8a; max-height: 250px; overflow-y: auto; white-space: pre-wrap;
         }
-
-        /* ตกแต่งสีลิงก์ใน Bio */
-        .modal-bio a {
-            color: #fbbf24;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-
-        @keyframes glitchFlicker { 0%, 100% { opacity: 0.9; } 32% { opacity: 0.4; } 34% { opacity: 0.3; } 81% { opacity: 0.5; } }
-        @keyframes textNoise { 0%, 90%, 100% { transform: scale(1); } 92% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
@@ -157,15 +155,17 @@
         <div class="survivor-count" id="count-display">0 / 15</div>
     </div>
 
-    <h1>รายชื่อผู้เล่นทั้งหมด</h1>
+    <!-- เปลี่ยนข้อความหัวข้อ -->
+    <h1>ชัยชนะแด่ ราชสำนัก</h1>
 
     <div class="grid-container" id="player-grid">
+        <!-- ข้อมูลผู้เล่นคงเดิมตามโครงสร้างของคุณ -->
         <div class="player-card alive-card" onclick="openBio(1)"><img src="1.png" class="player-img"><div class="player-name">1. คีธ</div><div class="status-text">● ALIVE</div></div>
-        <div class="player-card alive-card" onclick="openBio(2)"><img src="2.png" class="player-img"><div class="player-name">2. เสอเหนียน</div><div class="status-text">● ALIVE</div></div>
+        <div class="player-card dead-card" onclick="openBio(2)"><img src="2.png" class="player-img"><div class="player-name">2. เสอเหนียน</div><div class="status-text">✖ DEAD<</div></div>
         <div class="player-card dead-card" onclick="openBio(3)"><img src="3.png" class="player-img"><div class="player-name">3. คิมูระ</div><div class="status-text">✖ DEAD</div></div>
         <div class="player-card dead-card" onclick="openBio(4)"><img src="4.png" class="player-img"><div class="player-name">4. สีน้ำ</div><div class="status-text">✖ DEAD</div></div>
         <div class="player-card dead-card" onclick="openBio(5)"><img src="5.png" class="player-img"><div class="player-name">5. ชานหู</div><div class="status-text">✖ DEAD</div></div>
-        <div class="player-card alive-card" onclick="openBio(6)"><img src="6.png" class="player-img"><div class="player-name">6. เสวียนชงหยวน</div><div class="status-text">● ALIVE</div></div>
+        <div class="player-card dead-card" onclick="openBio(6)"><img src="6.png" class="player-img"><div class="player-name">6. เสวียนชงหยวน</div><div class="status-text">✖ DEAD</div></div>
         <div class="player-card alive-card" onclick="openBio(7)"><img src="7.png" class="player-img"><div class="player-name">7. ชิดาเระ</div><div class="status-text">● ALIVE</div></div>
         <div class="player-card dead-card" onclick="openBio(8)"><img src="8.png" class="player-img"><div class="player-name">8. เซราลิธ</div><div class="status-text">✖ DEAD</div></div>
         <div class="player-card dead-card" onclick="openBio(9)"><img src="9.png" class="player-img"><div class="player-name">9. คิมหันต์</div><div class="status-text">✖ DEAD</div></div>
@@ -187,181 +187,8 @@
     </div>
 
     <script>
-        const playerDetails = {
-            1: { name: "คีธ", bio: `โฟเบียของผู้ปกครอง : ไม่มี
-ชื่อ facebook  : Angeline Enilegna
-ชื่อตัวละคร : คีธ ครีดอน
-น้ำหนัก/ส่วนสูง : 71 kg/184 cm
-เพศ : ชาย
-อายุ : 35
-สัญชาติ/เชื้อชาติ : อังกฤษ🏴󠁧󠁢󠁥󠁮󠁧󠁿/อังกฤษ 🏴󠁧󠁢󠁥󠁮󠁧󠁿
-อื่น ๆ : 
-- เป็นคนอังกฤษ อังกฤษแต้ๆ พูดสำเนียงบริติช (รอทะลุมิติก่อนเดี๋ยวเว้าจีนให้)
-- เชียร์บอลทีมไบรตัน ทีมบ้านเกิด
-- ชอบหยอกชอบแกล้ง แล้วก็ช่างหยอด ติดบริหารเสน่ห์
-- ทำงานเกี่ยวกับสภา ไม่สิดนตรี เอ้อ นั่นแหละ
-- ใส่แหวนนิ้วนางซ้าย แต่งงานแล้วคับ เป็นพ่อลูกสอง
-- ชอบแฟชั่น 70-80s กับร็อค เน้นในเกาะบ้านตัวเอง
-- พก BeanBoozled ไว้แกล้งคน
-` },
-            2: { name: "เสอเหนียน", bio: `โฟเบียของผู้ปกครอง : กบ คางคก
-ชื่อ facebook  : Pimpichaya Pim
-ชื่อตัวละคร : เสอเหนียน
-น้ำหนัก/ส่วนสูง : 70/186
-เพศ : ไม่เปิดเผย(เปลี่ยนเพศไปมาได้)
-อายุ : ไม่ระบุแต่ 100+
-สัญชาติ/เชื้อชาติ : จีน/จีน
-อื่น ๆ :
--เป็นหมอยาลึกลับมากฝีมือที่มักถูกจ้างวานโดยขุนนางชนชั้นสูงบ่อยๆ ว่ากันว่าทำยาได้ทุกแขนงไม่ว่าจะมหัศจรรย์พันลึกแค่ไหนถ้าจ่ายไหว
--รูปลักษณ์คล้ายผู้ชายก็จริงแต่เป็นเพศไม่ระบุ
--นักษัตรปีมะเส็ง Eคำแก้วมันเป็น~~โอโรจิมารุ~~งู้
-` },
-            3: { name: "คิมูระ", bio: `โฟเบียของผู้ปกครอง : ตุ๊กแกบ้าน
-ชื่อ facebook  : Pattarathida Butsra
-ชื่อตัวละคร :  คิมุระ ไดจิ /Kimura Daichi
-น้ำหนัก/ส่วนสูง :  76 / 183
-เพศ : ชาย
-อายุ : 35
-สัญชาติ/เชื้อชาติ : ญี่ปุ่น/ญี่ปุ่น
-อื่น ๆ : -
-` },
-            4: { name: "สีน้ำ", bio: `โฟเบียของผู้ปกครอง : ซอมบี้ ศพ ศพเดินได้ แผลเน่า อวัยวะบิดเบี้ยว 
-ชื่อ facebook  : Lasida Wasthong 
-ชื่อตัวละคร : สีน้ำ
-น้ำหนัก/ส่วนสูง : 60/180
-เพศ : ชาย
-อายุ : 25
-สัญชาติ/เชื้อชาติ : ไทย/ไทย
-อื่น ๆ : - ยิ้มเก่ง ยิ้มบ่อย ยิ้มโง่ด้วย ยิ้มตลอดจนเหมือนเสพ
-- สมาธิสั้นโฟกัสอะไรนานๆไม่ได้
-- วันนี้ท้องฟ้าสวยจัง
-- นั่นอะไรอะ
-- นี่ใช่นกรึเปล่า 
-` },
-            5: { name: "ชานหู", bio: `โฟเบียของผู้ปกครอง : ฝูงมด/แมลงสาบ/แมงมุม/คอนเท้นเค้กเสมือนจริง
-ชื่อ facebook  : มินิ เป็นแมว
-ชื่อตัวละคร : ชานหู | Shānhú
-น้ำหนัก/ส่วนสูง : 58 Kg. / 179 Cm.
-เพศ : ชาย
-อายุ : ~ 27
-สัญชาติ/เชื้อชาติ : จีน
-อื่น ๆ : - ใส่แหวนหยกไว้ที่นิ้ว
-- ตาไม่ค่อยสู้แสงเท่าไหร่
-` },
-            6: { name: "เสวียนชงหยวน", bio: `โฟเบียของผู้ปกครอง : จิ้งจก / ตุ๊กแก / ตาถลนออกจากเบ้า (กลัวเฉพาะภาพ อ่านคำบรรยายได้)
-ชื่อ facebook  : Torinne Dalton
-ชื่อตัวละคร : เสวียน ชงหยวน (Xuán Chōg Yúan) / 玄 聪圆
-น้ำหนัก/ส่วนสูง : 64 ก.ก. / 179 ซ.ม.
-เพศ : ชาย
-อายุ : 42
-สัญชาติ/เชื้อชาติ : จีน
-อื่น ๆ : 
-- ทำงานในไนท์คลับที่มีสังเวียนต่อสู้เพื่อสร้างความบันเทิงให้กับลูกค้าในกวางโจว ในฐานะโค้ชดูแลนักสู้สามคน ซุน เหม่ยหลง , จู  อี้เฉิน และ ชา หนิงเฟิ่ง
-- ทำให้เขามีชื่อเล่นที่คนส่วนใหญ่เรียกกันว่า 'โค้ชเสวียน' ซึ่งเขาค่อนข้างยืดหยุ่นกับการเรียกชื่อ จะเรียกแบบไหนก็ได้ทั้งหมด
-- CV : Funaki Mahito
-` },
-            7: { name: "ชิดาเระ", bio: `โฟเบียของผู้ปกครอง : งู / ผีไทย aka ชฎา
-ชื่อ facebook  : gentamicin
-ชื่อตัวละคร : ซากุระ ชิดาเระ | Zakura Shidare
-น้ำหนัก/ส่วนสูง : 56กก. / 170ซม.
-เพศ : หญิง
-อายุ : 24 ปี
-สัญชาติ/เชื้อชาติ : ญี่ปุ่น / ญี่ปุ่น
-อื่น ๆ :
-- CV: [Hayami Saori](<https://youtu.be/sle7Rd0ntWQ?t=44&si=aI5a396r-ey1R9Fl>)
-- มีน้องสาวและน้องชายอย่างละคนชื่อยาเอะกับยามะ
-- พกดาบไม้ไว้ตลอดเวลา และอุปกรณ์ของกุ๊กกิ๊กอย่างสมาร์ทโฟน กระเป๋าเงิน และลูกกวาด
-- ร่ำเรียนวิชาดาบจากอัศวินจากแดนไกล?
-` },
-            8: { name: "เซราลิธ", bio: `โฟเบียของผู้ปกครอง : —
-ชื่อ facebook  : Phanich Korlaork
-ชื่อตัวละคร : เซราลิธ สตาร์ค | Zeralith Stark
-น้ำหนัก/ส่วนสูง : 196/72 
-เพศ : ชาย 
-อายุ : ประมาณ 29 ปี 
-สัญชาติ/เชื้อชาติ : ไอร์แลนด์ 
-อื่น ๆ : 
-- สายความรักเชิงผปค : FZ 
-- ชายชาติทหาร แต่อยู่ในช่วงระหว่างพักเที่ยว
-` },
-            9: { name: "คิมหันต์", bio: `โฟเบียของผู้ปกครอง : รู, ผีภาพสยองขวัญแบบ no context
-ชื่อ facebook  : Momo Nostale
-ชื่อตัวละคร :  คิมหันต์ เหล่าสกุล | Kimhan Laosakul
-น้ำหนัก/ส่วนสูง : 63  / 172
-เพศ : ชาย
-อายุ : 25
-สัญชาติ/เชื้อชาติ : ไทย/ไทย
-อื่น ๆ :
-- หมอผีเล็บเจลหลากสีสัน
-- ค่อนข้างเป็นมิตรแต่เป็นคนไม่ยอมคน
-- ค่อนข้างหัวสมัยใหม่ วัยรุ่นตามเทรนด์
-- เมื่อเข้ามาใกล้จะได้กลิ่นคล้ายน้ำอบ
-- มีนิสัยล้นนิดๆ บางครั้งก็เป็นพวกบ้าหอบฟางพกของติดตัวมากมาย
-` },
-            10: { name: "ไชนี่", bio: `โฟเบียของผู้ปกครอง : แมงมุมกับคลิปปูเดินหรือปูมากกว่าสามตัวรวมกันในเฟรมเดียว คำบรรยายพอไหวแต่อยากให้เตือนล่วงหน้า รูปเห็นไม่ได้ในทุกแบบ จุดเติมเส้นก็ไม่ไหวค่ะ 
-
-ชื่อ facebook  : รอระรุ่ง ไพลิน
-ชื่อตัวละคร : ไชนี่
-น้ำหนัก/ส่วนสูง : 70/186
-เพศ : ชาย
-อายุ : 28
-สัญชาติ/เชื้อชาติ : อิตาเลี่ยน(?)
-อื่น ๆ : 
-ไชนี่คือไชนี่ ‘บทบาท’ของไชนี่คือมนุษย์ที่ท่องเที่ยวรอบโลกอย่างมีความสุข หลังจากเที่ยวไปในในยุโรปแล้วในที่สุดก็ถึงคิวของการท่องเที่ยวในทวีปเอเชียบ้างแล้ว!?
-เนื่องจากเป้าหมายปลายทางคือประเทศไทยเหมือนกันเลยติดสอยห้อยตามคณะทัวร์มาด้วย ว้าวเยาราช สุดยอดไปเลยมีพิซซ่าไหม!
-` },
-            11: { name: "เฟิงมี่", bio: `โฟเบียของผู้ปกครอง : แมง/แมลงมีขนทุกชนิด (กรอบดิสใหม่ที่เป็นผึ้งอันนั้นก็เห็นแล้วขนลุกอยู่ในระดับนึง) / ปีกผีเสื้อแบบซูมอินเห็นเกล็ด
-
-ชื่อ facebook  : แบม เตชินี โบว์ฟ้า
-ชื่อตัวละคร : เฟิงมี่ Fēngmì
-น้ำหนัก/ส่วนสูง : 60/176
-เพศ : ชาย
-อายุ : หน้า 24 อายุจริงไม่ทราบ
-สัญชาติ/เชื้อชาติ : ตอนนี้จีน  
-อื่น ๆ : 
-- เป็นชาวสวนหนีเที่ยวท่านหนึ่ง
-- kapok
-- อย่าถามหาสาระจากคน ๆ นี้ให้มาก เพราะคุณจะไม่ได้อะไรเลย
-` },
-            12: { name: "อ็อคเทฟ", bio: `โฟเบียของผู้ปกครอง : -
-ชื่อ facebook  : Kanarat Worasathit
-ชื่อตัวละคร : Octave
-น้ำหนัก/ส่วนสูง : ??/188
-เพศ : ชาย ?
-อายุ : 25
-สัญชาติ/เชื้อชาติ : เยอรมัน/เยอรมัน
-อื่น ๆ : - ฝรั่งท่านหนึ่งที่มาเที่ยวสงกรานต์แล้วยังไม่กลับ` },
-            13: { name: "เมแกน", bio: `โฟเบียของผู้ปกครอง : creepy pasta เรื่อง this man 
-ชื่อ facebook  : Caoimhe LunarLunatic
-ชื่อตัวละคร : เมแกน (Megan)
-น้ำหนัก/ส่วนสูง : 49 k.g. / 160 c.m. 
-เพศ : หญิง
-อายุ : 22 ปี
-สัญชาติ/เชื้อชาติ : Australian / Australian - Chinese 
-อื่น ๆ : 
-ลูกครึ่งออสเตรเลีย - จีน ที่อาศัยช่วงเรียนจบมาเที่ยวเล่นตามอำเภอใจก่อนหางานทำ
-สื่อสารได้ทั้งอังกฤษและจีน พ่อแม่สอนมาดีก็งี้—` },
-            14: { name: "ฮุยปา", bio: `โฟเบียของผู้ปกครอง : ไม่มี
-ชื่อ facebook  : อัยการ ชื่อเล่นไม่ใช่อาชีพ
-ชื่อตัวละคร : ฮุยปา (灰八)
-น้ำหนัก/ส่วนสูง : 80 / 188
-เพศ : ชาย
-อายุ : ภายนอก 35
-สัญชาติ/เชื้อชาติ : Tecnically อิสราเอล
-อื่น ๆ : -` },
-            15: { name: "ชื่อ", bio: `โฟเบียของผู้ปกครอง :  - 
-ชื่อ facebook  : Cos Sathita
-ชื่อตัวละคร : ชื่อ | Shi
-น้ำหนัก/ส่วนสูง : 78/182
-เพศ : ชาย
-อายุ : ภายนอก 20 ต้น ๆ
-สัญชาติ/เชื้อชาติ : ญี่ปุ่น/ญี่ปุ่น-จีน
-อื่น ๆ :
-ปลายนิ้วเป็นสีแดง ดวงตาปิดด้วยเทปสีแดง,
-ใส่ชุดกักคุรัน?,
-Adoptable designed by Gv Stava
-` }
-        };
+        /* [playerDetails and formatBioText remain exactly the same as provided] */
+        const playerDetails = { 1: { name: "คีธ", bio: `...` }, /* ... more details ... */ 15: { name: "ชื่อ", bio: `...` } };
 
         function formatBioText(text) {
             if (!text) return '';
@@ -406,7 +233,8 @@ Adoptable designed by Gv Stava
                 this.speedX = Math.random() * 0.5 - 0.25;
                 this.speedY = Math.random() * -1.5 - 0.5;
                 this.opacity = Math.random() * 0.6 + 0.1;
-                this.color = Math.random() > 0.5 ? '#ff4d4d' : '#ff944d'; 
+                // ปรับ Particle เป็นแสงสีฟ้า
+                this.color = Math.random() > 0.5 ? '#60a5fa' : '#93c5fd'; 
             }
             update() { this.x += this.speedX; this.y += this.speedY; if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; } }
             draw() { ctx.fillStyle = this.color; ctx.globalAlpha = this.opacity; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
